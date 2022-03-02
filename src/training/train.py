@@ -1,3 +1,4 @@
+import argparse
 import logging
 from typing import Tuple
 
@@ -52,3 +53,14 @@ def train(
     model = train_and_save_model(pos_samples_features, neg_samples_features, model_path)
 
     return model
+
+
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(description="Train a new model for car detection")
+    parser.add_argument("annotation_file", type=str, help="Path to the annotation file")
+    parser.add_argument("model_path", type=str, help="Path to save the model to")
+
+    args = parser.parse_args()
+
+    train(args.annotation_file, args.model_path)

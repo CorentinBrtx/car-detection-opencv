@@ -1,3 +1,4 @@
+import argparse
 import os
 import pickle
 
@@ -55,3 +56,18 @@ def make_submission_file(
 
     df_prediction = pd.DataFrame(columns=["Id", "Predicted"], data=rows).set_index("Id")
     df_prediction.to_csv(target_path)
+
+
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(description="Make a submission file for the Kaggle Challenge")
+
+    parser.add_argument(
+        "test_folder", type=str, help="Folder containing the images to detect cars in."
+    )
+    parser.add_argument("model_path", type=str, help="Path to the trained model.")
+    parser.add_argument("target_path", type=str, help="Path to save the submission file to.")
+
+    args = parser.parse_args()
+
+    make_submission_file(args.test_folder, args.model_path, args.target_path)

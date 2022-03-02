@@ -10,10 +10,9 @@ To install the required dependencies, run the following command:
 
 ## Training
 
-To train a new model on a set of labelled images, you can use the method `train`:
+To train a new model on a set of labelled images, run the following command:
 
-    from src.training.train import train
-    train(annotation_file, model_save_path)
+    python -m src.training.train annotations.csv model.pkl
 
 The annotation_file is a CSV file with the following columns:
 
@@ -26,6 +25,12 @@ where:
 
 ## Testing
 
-To test your model, you can use the methods in the `src/detection/` folder (`detect_cars()` in `detect.py`, or `make_submission_file()` in `make_submission.py`).
+You can use the following command to test your model on one image:
+
+    python -m src.detection.detect image.jpg model.pkl output.txt
+
+Or you can use the following command to generate a submission file for the Kaggle Car Detection competition:
+
+    python -m src.detection.make_submission_file test_folder model.pkl submission.csv
 
 An already trained model is provided in the `models/` folder.

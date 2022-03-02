@@ -1,3 +1,4 @@
+import argparse
 from typing import List, Tuple
 
 import cv2
@@ -6,6 +7,7 @@ from sklearn.base import ClassifierMixin
 
 from ..hog import compute_features
 from .sliding_window import sliding_window
+import pickle
 
 
 def detect_cars(
@@ -57,3 +59,23 @@ def detect_cars(
     bounding_boxes = [boxes[i] for i in range(len(classification)) if classification[i] == 1]
 
     return bounding_boxes
+
+
+if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(description="Detect cars in an image")
+
+    parser.add_argument("image_path", type=str, help="Path to the image to detect cars in.")
+    parser.add_argument("model_path", type=str, help="Path to the trained model.")
+    parser.add_argument("results_path", type=str, help="Path to save the results to.")
+
+    args = parser.parse_args()
+
+    with open(args.model_path, "rb") as f:
+        model = pickle.load(f)
+
+    bounding_boxes = detect_cars(cv2.imread(args.image_path), model)
+
+    with open(args.results_path, "w") as f:
+        for box in bounding_boxes:
+            f.write(" ".join(map(str, box)) + " ")
